@@ -56,7 +56,7 @@ export function useBestTradeExactIn(
                         fee: result[5],
                         priceAfterSwap: result[2]
                     }
-                } else if (currentBest.amountOut < result[0]) {
+                } else if (currentBest.amountOut < result[0][result[0].length - 1]) {
                     return {
                         bestRoute: routes[i],
                         amountOut: result[0][result[0].length - 1],
@@ -150,7 +150,7 @@ export function useBestTradeExactOut(
                         fee: result[5],
                         priceAfterSwap: result[2]
                     }
-                } else if (currentBest.amountIn > result[0]) {
+                } else if (currentBest.amountIn > result[1][result[1].length - 1]) {
                     return {
                         bestRoute: routes[i],
                         amountIn: result[1][result[1].length - 1],
