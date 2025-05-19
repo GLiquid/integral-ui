@@ -69,7 +69,9 @@ export function useTransactionAwait(
                 action: <ViewTxOnExplorer hash={hash} />,
             });
             if (redirectPath) {
-                navigate(redirectPath);
+                setTimeout(() => {
+                    navigate(redirectPath);
+                }, 5_000)
             }
         }
     }, [isSuccess]);

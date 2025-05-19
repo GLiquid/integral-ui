@@ -9,7 +9,7 @@ import {
 } from '@cryptoalgebra/sdk';
 import { usePrepareAlgebraPositionManagerMulticall } from '@/generated';
 import { useTransactionAwait } from '@/hooks/common/useTransactionAwait';
-import { Address, useContractWrite } from 'wagmi';
+import { Address, useAccount, useContractWrite } from 'wagmi';
 import { useDerivedMintInfo, useMintState } from '@/state/mintStore';
 import Loader from '@/components/common/Loader';
 import { PoolState, usePool } from '@/hooks/pools/usePool';
@@ -17,13 +17,19 @@ import Summary from '../Summary';
 import SelectPair from '../SelectPair';
 import { STABLECOINS } from '@/constants/tokens';
 import { TransactionType } from '@/state/pendingTransactionsStore';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 
 const CreatePoolForm = () => {
+
+    const { address: account } = useAccount();
+
     const { currencies } = useDerivedSwapInfo();
 
     const { actions: { selectCurrency } } = useSwapState();
 
     const { startPriceTypedValue, actions: { typeStartPriceInput } } = useMintState()
+
+    const { open } = useWeb3Modal();
 
     const currencyA = currencies[SwapField.INPUT];
     const currencyB = currencies[SwapField.OUTPUT];
@@ -95,7 +101,7 @@ const CreatePoolForm = () => {
 
         return () => {
             selectCurrency(SwapField.INPUT, ADDRESS_ZERO)
-            selectCurrency(SwapField.OUTPUT, STABLECOINS.USDT.address as Account)
+            selectCurrency(SwapField.OUTPUT, STABLECOINS.USDT.address as Address)
             typeStartPriceInput('')
         }
     }, [])
@@ -115,31 +121,36 @@ const CreatePoolForm = () => {
                 <Summary currencyA={currencyA} currencyB={currencyB} />
             )}
 
-            <Button
-                className="mt-2"
-                disabled={
-                    isLoading || 
-                    isPoolExists || 
-                    !startPriceTypedValue || 
-                    !areCurrenciesSelected ||
-                    isSameToken
-                }
-                onClick={() => createPool && createPool()}
-            >
-                {isLoading ? (
-                    <Loader />
-                ) : isSameToken ? (
-                    'Select another pair'
-                ) : !areCurrenciesSelected ? (
-                    'Select currencies'
-                ) : isPoolExists ? (
-                    'Pool already exists'
-                ) : !startPriceTypedValue ? (
-                    'Enter initial price'
-                ) : (
-                    'Create Pool'
-                )}
-            </Button>
+{
+                account ? (<Button
+                    className="mt-2"
+                    disabled={
+                        isLoading ||
+                        isPoolExists ||
+                        !startPriceTypedValue ||
+                        !areCurrenciesSelected ||
+                        isSameToken
+                    }
+                    onClick={() => createPool && createPool()}
+                >
+                    {isLoading ? (
+                        <Loader />
+                    ) : isSameToken ? (
+                        'Select another pair'
+                    ) : !areCurrenciesSelected ? (
+                        'Select currencies'
+                    ) : isPoolExists ? (
+                        'Pool already exists'
+                    ) : !startPriceTypedValue ? (
+                        'Enter initial price'
+                    ) : (
+                        'Create Pool'
+                    )}
+                </Button>) : (<Button
+                    onClick={() => open()}>
+                    Connect Wallet
+                </Button>)
+            }
         </div>
     );
 };
