@@ -64,7 +64,19 @@ const hyperEvmTestnet = defineChain({
   testnet: true,
 })
 
-const chains = [holesky, hyperEvm, hyperEvmTestnet]
+const holeskyCustom = defineChain({
+  ...holesky,
+  rpcUrls: {
+    default: {
+      http: ['https://ethereum-holesky-rpc.publicnode.com'],
+    },
+    public: {
+      http: ['https://ethereum-holesky-rpc.publicnode.com'],
+    },
+  },
+})
+
+const chains = [holeskyCustom, hyperEvm, hyperEvmTestnet]
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata: { name: 'Algebra Integral', description: 'DEX Engine', url: 'https://integral.algebra.finance', icons: [''] } })
 
 createWeb3Modal({ 
