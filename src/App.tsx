@@ -4,13 +4,67 @@ import './App.css'
 
 import { WagmiConfig } from 'wagmi'
 import Layout from "@/components/common/Layout"
-import { holesky } from "viem/chains"
 
+import HyperLogo from '@/assets/tokens/hyperlight.svg'
+import HyperLogoDark from '@/assets/tokens/hyperdark.svg'
 import ETHLogo from '@/assets/tokens/ether.svg'
+import { defineChain } from 'viem'
+import { holesky } from 'viem/chains'
 
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID
 
-const chains = [holesky]
+const hyperEvm = defineChain({
+  id: 999,
+  name: 'HyperEVM',
+  network: 'hyperEvm',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Hyperliquid',
+    symbol: 'HYPE',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.hyperliquid.xyz/evm'],
+    },
+    public: {
+      http: ['https://rpc.hyperliquid.xyz/evm'],
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xca11bde05977b3631167028862be2a173976ca11',
+      blockCreated: 77,
+    },
+  },
+})
+
+const hyperEvmTestnet = defineChain({
+  id: 998,
+  name: 'HyperEVM Testnet',
+  network: 'hyperEvmTestnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Hyperliquid',
+    symbol: 'HYPE',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.hyperliquid-testnet.xyz/evm'],
+    },
+    public: {
+      http: ['https://rpc.hyperliquid-testnet.xyz/evm'],
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xca11bde05977b3631167028862be2a173976ca11',
+      blockCreated: 77,
+    },
+  },
+  testnet: true,
+})
+
+const chains = [holesky, hyperEvm, hyperEvmTestnet]
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata: { name: 'Algebra Integral', description: 'DEX Engine', url: 'https://integral.algebra.finance', icons: [''] } })
 
 createWeb3Modal({ 
@@ -18,9 +72,11 @@ createWeb3Modal({
   projectId, 
   chains,
   chainImages: {
-    17000: ETHLogo
+    17000: ETHLogo,
+    999: HyperLogo,
+    998: HyperLogoDark,
   },
-  defaultChain: holesky,
+  defaultChain: hyperEvm,
   themeVariables: {
     '--w3m-accent': '#2797ff'
   }
