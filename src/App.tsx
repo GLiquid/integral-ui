@@ -7,10 +7,22 @@ import Layout from "@/components/common/Layout"
 import { holesky } from "viem/chains"
 
 import ETHLogo from '@/assets/tokens/ether.svg'
+import { defineChain } from 'viem'
 
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID
 
-const chains = [holesky]
+const holeskyCustom = defineChain({
+  ...holesky,
+  rpcUrls: {
+    default: {
+      http: ['https://ethereum-holesky-rpc.publicnode.com'],
+    },
+    public: {
+      http: ['https://ethereum-holesky-rpc.publicnode.com']
+    }
+  },
+})
+const chains = [holeskyCustom]
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata: { name: 'Algebra Integral', description: 'DEX Engine', url: 'https://integral.algebra.finance', icons: [''] } })
 
 createWeb3Modal({ 
