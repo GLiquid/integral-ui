@@ -4,13 +4,14 @@ import SwapParams from '@/components/swap/SwapParams';
 import PageContainer from '@/components/common/PageContainer';
 import PageTitle from '@/components/common/PageTitle';
 import PoweredByAlgebra from '@/components/common/PoweredByAlgebra';
+;
 
 const SwapPage = () => {
     return (
         <PageContainer>
             <PageTitle title={'Swap'} />
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-0 gap-y-8 w-full lg:gap-8 mt-8 lg:mt-16">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-0 gap-y-8 w-full lg:gap-8 mt-8 lg:mt-16">
                 <div className="flex flex-col gap-2">
                     {/* <IntegralPools /> */}
 
@@ -22,7 +23,7 @@ const SwapPage = () => {
                     <PoweredByAlgebra />
                 </div>
 
-                <div className="col-span-2">{/* <SwapChart /> */}</div>
+                {/* <div className="col-span-2"><SwapChart /></div> */}
             </div>
         </PageContainer>
     );

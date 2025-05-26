@@ -14,7 +14,7 @@ import { TransactionCard } from "../TransactionCard"
 import { useAccount } from "wagmi"
 import { usePendingTransactions, usePendingTransactionsStore } from "@/state/pendingTransactionsStore"
 
-const Header = () => <header className="sticky top-4 z-10 grid grid-cols-3 justify-between items-center py-1 px-2 bg-card border border-card-border rounded-3xl gap-4">
+const Header = () => <header className="sticky top-4 z-10 max-w-screen-xl mx-auto grid grid-cols-3 justify-between items-center py-1 px-2 bg-card border border-card-border rounded-3xl gap-4">
     <Algebra />
     <Navigation />
     <Account />
